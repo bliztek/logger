@@ -1,0 +1,25 @@
+# Node
+node_modules
+dist
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE / OS
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+npm-debug.log*
+pnpm-lock.yaml
+yarn.lock
+package-lock.json

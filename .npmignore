@@ -1,0 +1,28 @@
+# Source and build inputs
+src/
+tsconfig.json
+
+# Examples and demos
+examples/
+
+# Dependencies and lockfiles
+node_modules/
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Tests / coverage
+__tests__/
+tests/
+coverage/
+
+# Local config / env
+.env
+.env.*
+.vscode/
+.idea/
+
+# Misc
+*.log
+*.tsbuildinfo
+.DS_Store
