@@ -2,14 +2,27 @@
   "name": "@bliztek/logger",
   "version": "1.0.0",
   "description": "Lightweight contextual logging service for Node & browser with runtime and env-based filtering.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "module": "dist/index.mjs",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
     "clean": "rm -rf dist",
-    "lint": "eslint . --ext .ts"
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint . --ext .ts",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "coverage": "vitest run --coverage"
   },
   "keywords": [
     "logger",
@@ -22,16 +35,17 @@
   ],
   "author": "Steven Brown",
   "license": "MIT",
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bliztek/logger.git"
   },
-  "files": [
-    "dist"
-  ],
+  "bugs": {
+    "url": "https://github.com/bliztek/logger/issues"
+  },
+  "homepage": "https://github.com/bliztek/logger#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@types/node": "^22.18.8",
     "@vitest/coverage-v8": "^3.2.4",
