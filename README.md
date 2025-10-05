@@ -5,7 +5,7 @@ A lightweight contextual logger for **Node.js** and **Next.js** environments.
 ![Tests](https://github.com/bliztek/logger/actions/workflows/ci.yml/badge.svg)
 ![npm version](https://img.shields.io/npm/v/@bliztek/logger.svg)
 ![license](https://img.shields.io/npm/l/@bliztek/logger.svg)
-![coverage](https://img.shields.io/codecov/c/github/bliztek/logger/main.svg)
+[![codecov](https://codecov.io/gh/bliztek/logger/graph/badge.svg?token=HDFH8TX66I)](https://codecov.io/gh/bliztek/logger)
 
 Supports:
 
