@@ -2,7 +2,7 @@
 
 A lightweight contextual logger for **Node.js** and **Next.js** environments.
 
-![Tests](https://github.com/bliztek/logger/actions/workflows/test.yml/badge.svg)
+![Tests](https://github.com/bliztek/logger/actions/workflows/ci.yml/badge.svg)
 ![npm version](https://img.shields.io/npm/v/@bliztek/logger.svg)
 ![license](https://img.shields.io/npm/l/@bliztek/logger.svg)
 ![coverage](https://img.shields.io/codecov/c/github/bliztek/logger/main.svg)
