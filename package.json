@@ -1,9 +1,9 @@
 {
   "name": "@bliztek/logger",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Lightweight contextual logging service for Node & browser with runtime and env-based filtering.",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
   "files": [
@@ -11,8 +11,8 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "scripts": {
