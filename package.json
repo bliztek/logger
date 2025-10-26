@@ -1,23 +1,23 @@
 {
   "name": "@bliztek/logger",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Lightweight contextual logging service for Node & browser with runtime and env-based filtering.",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "type": "module",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
+      "require": "./dist/index.cjs",
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && mv dist-cjs/index.js dist/index.cjs && rm -rf dist-cjs",
     "lint": "eslint . --ext .ts",
     "test": "vitest run --coverage --reporter=junit --outputFile=test-report.junit.xml",
     "test:dev": "vitest",
