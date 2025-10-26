@@ -1,4 +1,3 @@
-// packages/logger/src/logger.ts
 import {
   LEVELS,
   isBrowser,
@@ -6,8 +5,9 @@ import {
   timestamp,
   nodeColor,
   browserCss,
-} from "./utils";
-import type { LevelName, LevelNum } from "./types";
+} from "./utils.js";
+import type { LevelName, LevelNum } from "./types.js";
+import { getEnvVar } from "./env.js";
 
 export class LoggingService {
   private levelName: LevelName;
@@ -18,26 +18,24 @@ export class LoggingService {
   private static contextPolicy: "all" | "none" = "none";
 
   constructor(opts?: { level?: LevelName; context?: string }) {
+    // ✅ detect dev mode safely for Node + Browser + Vite
     const isDev =
-      (typeof process !== "undefined" &&
-        process.env.NODE_ENV === "development") ||
-      (typeof window !== "undefined" &&
-        process.env.NEXT_PUBLIC_NODE_ENV === "development");
+      getEnvVar("NODE_ENV") === "development" ||
+      getEnvVar("NEXT_PUBLIC_NODE_ENV") === "development" ||
+      getEnvVar("MODE") === "development";
 
     const defaultLevel: LevelName = envDebugOn() || isDev ? "DEBUG" : "INFO";
     this.levelName = opts?.level ?? defaultLevel;
     this.levelNum = LEVELS[this.levelName];
     this.context = opts?.context;
 
-    if (
-      typeof process !== "undefined" &&
-      LoggingService.enabledContexts.size === 0
-    ) {
-      const envContexts =
-        process.env.LOGGER_CONTEXTS ??
-        process.env.NEXT_PUBLIC_LOGGER_CONTEXTS ??
-        "";
-      if (envContexts) {
+    // ✅ initialize from environment safely
+    if (LoggingService.enabledContexts.size === 0) {
+      const envContexts = (getEnvVar("LOGGER_CONTEXTS") ??
+        getEnvVar("NEXT_PUBLIC_LOGGER_CONTEXTS") ??
+        "") as string | boolean;
+
+      if (typeof envContexts === "string" && envContexts.trim()) {
         LoggingService.enabledContexts = new Set(
           envContexts
             .split(",")
@@ -46,8 +44,8 @@ export class LoggingService {
         );
       }
 
-      const envPolicy = (process.env.LOGGER_CONTEXT_POLICY ??
-        process.env.NEXT_PUBLIC_LOGGER_CONTEXT_POLICY) as
+      const envPolicy = (getEnvVar("LOGGER_CONTEXT_POLICY") ??
+        getEnvVar("NEXT_PUBLIC_LOGGER_CONTEXT_POLICY")) as
         | "all"
         | "none"
         | undefined;
@@ -55,7 +53,9 @@ export class LoggingService {
     }
   }
 
+  // ——————————————————————————————————————
   // Config helpers
+  // ——————————————————————————————————————
   setLevel(level: LevelName) {
     this.levelName = level;
     this.levelNum = LEVELS[level];
@@ -78,25 +78,26 @@ export class LoggingService {
     LoggingService.contextPolicy = policy;
   }
 
-  // Core decision logic (explicit for coverage)
+  // ——————————————————————————————————————
+  // Core decision logic
+  // ——————————————————————————————————————
   private shouldLog(lvl: LevelNum): boolean {
     const policy = LoggingService.contextPolicy;
     const ctx = this.context?.toLowerCase();
 
-    let result = false;
+    if (!ctx) return policy === "all" && lvl >= this.levelNum;
 
-    if (!ctx) {
-      // root logger
-      if (policy === "all" && lvl >= this.levelNum) result = true;
-    } else if (policy === "all") {
+    if (policy === "all") {
       const disabled = LoggingService.enabledContexts.has(`!${ctx}`);
-      if (lvl >= this.levelNum && !disabled) result = true;
-    } else if (policy === "none") {
-      const enabled = LoggingService.enabledContexts.has(ctx);
-      if (lvl >= this.levelNum && enabled) result = true;
+      return lvl >= this.levelNum && !disabled;
     }
 
-    return result;
+    if (policy === "none") {
+      const enabled = LoggingService.enabledContexts.has(ctx);
+      return lvl >= this.levelNum && enabled;
+    }
+
+    return false;
   }
 
   private prefix(lvl: LevelName) {

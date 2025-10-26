@@ -1,4 +1,4 @@
-import type { LevelName, LevelNum } from "./types";
+import type { LevelName, LevelNum } from "./types.js";
 
 export const LEVELS: Record<LevelName, LevelNum> = {
   DEBUG: 10,
